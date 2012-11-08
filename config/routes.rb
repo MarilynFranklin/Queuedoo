@@ -1,4 +1,5 @@
 QueueApp::Application.routes.draw do
+  root :to => 'public#index'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
