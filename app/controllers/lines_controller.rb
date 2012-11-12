@@ -10,7 +10,6 @@ class LinesController < ApplicationController
   end
 
   def create
-    @line = Line.new(params[:line])
     if @line.save
       flash[:notice] = "Your line has been created"
       redirect_to @line
