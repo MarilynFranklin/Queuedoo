@@ -1,0 +1,4 @@
+<%= link_to 'View all lines', :root %>
+<%= link_to 'Edit Line', edit_line_path(@line) %> 
+<%= link_to 'Delete Line', @line, method: :delete, data: { confirm: "Are you sure?" }, title: @line.title %>
+<%= render @line %>
