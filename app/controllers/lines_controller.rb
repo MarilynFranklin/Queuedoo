@@ -5,6 +5,10 @@ class LinesController < ApplicationController
     @lines = Line.all
   end
 
+  def show
+    @queuer = Queuer.new
+  end
+
   def new
     @line = Line.new
   end

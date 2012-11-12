@@ -1,4 +1,3 @@
-@wip
 Feature: User deletes line:
   Background:
     Given the following line:
