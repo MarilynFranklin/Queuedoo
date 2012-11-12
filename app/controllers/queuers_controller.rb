@@ -1,4 +1,9 @@
 class QueuersController < ApplicationController
+
+  def show
+    @queuer = Queuer.find(params[:id])
+  end
+
   def create
     @line = Line.find(params[:line_id])
     @queuer = Queuer.new(params[:queuer])

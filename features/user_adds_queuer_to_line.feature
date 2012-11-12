@@ -1,4 +1,3 @@
-@wip
 Feature: User adds Queuer to line
 
   Scenario: Successful add

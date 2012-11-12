@@ -21,3 +21,9 @@ Given /^(\d+) ([^"]*)$/ do |count, model_name|
     fab.n(count.to_i)
   end
 end
+
+Given /^that ([^"]*) has the following ([^"]*):$/ do |parent, child, table|
+  with_ivars Fabrication::Cucumber::StepFabricator.new(child, :parent => parent) do |fab|
+    fab.from_table(table)
+  end
+end
