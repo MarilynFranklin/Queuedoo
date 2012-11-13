@@ -72,6 +72,8 @@ GEM
       railties (>= 3.1.0, < 5.0)
       thor (~> 0.14)
     json (1.7.5)
+    launchy (2.1.2)
+      addressable (~> 2.3)
     libv8 (3.3.10.4)
     libwebsocket (0.1.5)
       addressable
@@ -166,6 +168,7 @@ DEPENDENCIES
   database_cleaner
   fabrication
   jquery-rails
+  launchy
   pg
   rails (= 3.2.8)
   rspec-rails

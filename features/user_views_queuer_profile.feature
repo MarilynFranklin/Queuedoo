@@ -17,6 +17,7 @@ Feature: User views queuer profile
       | name  | John Smith   |
       | phone | 555-555-5555 |
     And I am on that queuer's page
+    And show me the page
     When I click "View Line"
     Then I should be on that line's page
     And I should see "John Smith"
