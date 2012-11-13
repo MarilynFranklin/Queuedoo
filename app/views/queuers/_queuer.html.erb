@@ -1,6 +1,4 @@
-<% if queuer.processed == false %>
-  <p>
-    <%= link_to queuer.name, [queuer.line, queuer]%>
-    <%= link_to "Process", [:processed, queuer.line, queuer], method: :put %>
-  </p>
-<% end %>
+<p>
+  <%= link_to queuer.name, [queuer.line, queuer]%>
+  <%= link_to "Process", [:processed, queuer.line, queuer], method: :put %>
+</p>

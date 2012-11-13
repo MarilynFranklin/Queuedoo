@@ -4,4 +4,5 @@ class Line < ActiveRecord::Base
   validates_presence_of :title
 
   has_many :queuers
+  has_many :unprocessed_queuers, class_name: "Queuer", conditions: { processed: false }
 end
