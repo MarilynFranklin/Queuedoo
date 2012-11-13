@@ -2,7 +2,7 @@ QueueApp::Application.routes.draw do
   root :to => 'lines#index'
 
   resources :lines do
-    resources :queuers, only: [:create, :show] do
+    resources :queuers, only: [:create, :show, :edit, :update] do
       member do
         put 'processed'
       end

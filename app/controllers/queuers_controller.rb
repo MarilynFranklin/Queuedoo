@@ -1,5 +1,10 @@
 class QueuersController < ApplicationController
 
+  def edit
+    @queuer = Queuer.find(params[:id])
+    @line = Line.find(params[:line_id])
+  end
+
   def show
     @queuer = Queuer.find(params[:id])
   end
@@ -23,5 +28,16 @@ class QueuersController < ApplicationController
     @queuer = Queuer.find(params[:id])
     @queuer.update_attributes(processed: true)
     redirect_to @line, notice: "Processed"
+  end
+
+  def update
+    @queuer = Queuer.find(params[:id])
+    @line = Line.find(params[:line_id])
+    if @queuer.update_attributes(params[:queuer])
+      redirect_to [@line, @queuer], notice: "Profile has been updated"
+    else
+      flash[:error] = @queuer.errors.full_messages.join
+      render :edit
+    end
   end
 end

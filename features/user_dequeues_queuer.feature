@@ -1,6 +1,5 @@
 Feature: User dequeues queuer
 
-@wip
   Scenario: happy path
     Given 1 line
     And that line has the following queuers:

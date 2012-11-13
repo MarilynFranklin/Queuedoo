@@ -4,4 +4,4 @@
 <%= render @line %>
 <%= render @line.unprocessed_queuers %>
 <p>Add someone to the line</p>
-<%= render partial: 'queuers/form', locals: { queuer: @queuer } %>
+<%= render partial: 'queuers/form', locals: { queuer: @queuer, submit_text: "Add" } %>
