@@ -8,6 +8,12 @@ class Queuer < ActiveRecord::Base
   before_save :set_place_in_line
 
   def set_place_in_line
-    self.place_in_line = self.line.next_spot
+    self.place_in_line ||= self.line.next_spot
+  end
+
+  def process!
+    self.processed = true
+    save!
+    line.move_up_queuers
   end
 end

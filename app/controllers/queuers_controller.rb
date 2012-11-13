@@ -15,7 +15,7 @@ class QueuersController < ApplicationController
   end
 
   def processed
-    @queuer.update_attributes(processed: true)
+    @queuer.process!
     redirect_to @line, notice: "Processed"
   end
 

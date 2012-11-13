@@ -9,4 +9,11 @@ class Line < ActiveRecord::Base
   def next_spot
     unprocessed_queuers.size + 1
   end
+
+  def move_up_queuers
+    unprocessed_queuers.each do |queuer|
+      queuer.place_in_line -= 1
+      queuer.save!
+    end
+  end
 end
