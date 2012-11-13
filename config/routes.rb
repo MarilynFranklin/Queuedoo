@@ -2,7 +2,11 @@ QueueApp::Application.routes.draw do
   root :to => 'lines#index'
 
   resources :lines do
-    resources :queuers, only: [:create, :show]
+    resources :queuers, only: [:create, :show] do
+      member do
+        put 'processed'
+      end
+    end
   end
   # The priority is based upon order of creation:
   # first created -> highest priority.

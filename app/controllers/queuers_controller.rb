@@ -17,4 +17,11 @@ class QueuersController < ApplicationController
       render 'lines/show'
     end
   end
+
+  def processed
+    @line = Line.find(params[:line_id])
+    @queuer = Queuer.find(params[:id])
+    @queuer.update_attributes(processed: true)
+    redirect_to @line, notice: "Processed"
+  end
 end

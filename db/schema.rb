@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121112191711) do
+ActiveRecord::Schema.define(:version => 20121113022757) do
 
   create_table "lines", :force => true do |t|
     t.string   "title"
@@ -26,8 +26,9 @@ ActiveRecord::Schema.define(:version => 20121112191711) do
     t.string   "name"
     t.string   "phone"
     t.integer  "line_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+    t.boolean  "processed",  :default => false
   end
 
 end
