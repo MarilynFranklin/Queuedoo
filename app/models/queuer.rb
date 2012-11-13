@@ -4,4 +4,10 @@ class Queuer < ActiveRecord::Base
   validates_presence_of :name
 
   belongs_to :line
+
+  before_save :set_place_in_line
+
+  def set_place_in_line
+    self.place_in_line = self.line.next_spot
+  end
 end

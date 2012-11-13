@@ -2,6 +2,8 @@ Feature: User Creates Line
   As a User
   In order to organize an event
   I want to create a line
+
+  @wip
   Scenario: Happy path
     Given I am on the homepage
     And I click "Create Line"
@@ -11,8 +13,8 @@ Feature: User Creates Line
     And I press "Create"
     Then I should see "Your line has been created"
     And I should see "Great Title"
-    #    And I should see "11/25/2004 10:30AM"
-    #    And I should see "12/25/2004 10:30AM"
+    # And I should see "11/25/2004 10:30AM"
+    # And I should see "12/25/2004 10:30AM"
 
   Scenario: User Attempts to skip title
     Given I am on the homepage

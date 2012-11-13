@@ -41,7 +41,7 @@ class LinesController < ApplicationController
 
   def lookup_line
     if params[:id]
-      @line= Line.find(params[:id])
+      @line = Line.find(params[:id])
     else
       @line = Line.new(params[:line])
     end

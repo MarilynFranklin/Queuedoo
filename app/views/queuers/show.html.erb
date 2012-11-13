@@ -1,4 +1,4 @@
-<%= link_to "View Line", line_path %>
+<%= link_to "View Line", line_path(@queuer.line) %>
 <%= link_to "Edit", [:edit, @queuer.line, @queuer] %>
 <p> Name: <%= @queuer.name %></p>
 <p> Phone: <%= @queuer.phone %></p>
