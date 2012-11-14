@@ -19,6 +19,11 @@ class QueuersController < ApplicationController
     redirect_to @line, notice: "Processed"
   end
 
+  def skip
+    @queuer.skip!
+    redirect_to @line
+  end
+
   def update
     if @queuer.update_attributes(params[:queuer])
       redirect_to [@line, @queuer], notice: "Profile has been updated"

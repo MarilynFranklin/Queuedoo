@@ -4,7 +4,7 @@ class Line < ActiveRecord::Base
   validates_presence_of :title
 
   has_many :queuers
-  has_many :unprocessed_queuers, class_name: "Queuer", conditions: { processed: false }
+  has_many :unprocessed_queuers, class_name: "Queuer", conditions: { processed: false }, order: "place_in_line ASC"
 
   def next_spot
     unprocessed_queuers.size + 1

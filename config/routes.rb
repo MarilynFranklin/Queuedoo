@@ -5,6 +5,7 @@ QueueApp::Application.routes.draw do
     resources :queuers, only: [:create, :show, :edit, :update] do
       member do
         put 'processed'
+        put 'skip'
       end
     end
   end
