@@ -6,6 +6,7 @@ class Line < ActiveRecord::Base
   has_many :queuers
   has_many :unprocessed_queuers, class_name: "Queuer", conditions: { processed: false }, order: "place_in_line ASC"
 
+  belongs_to :user
   def next_spot
     unprocessed_queuers.size + 1
   end

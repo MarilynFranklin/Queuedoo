@@ -4,6 +4,9 @@ describe Line do
   describe "validations" do
     it { should validate_presence_of :title }
   end
+  describe "associations" do
+    it { should belong_to :user }
+  end
   describe "#next_spot" do
     it "should be 1" do
       line = Fabricate :line
