@@ -17,11 +17,6 @@ Feature: User edits queuer profile
     And I should see "Profile has been updated"
 
   Scenario: Unsuccessful Edit
-    Given 1 line
-    And that line has the following queuer:
-      | name  | John Smith   |
-      | phone | 555-555-5555 |
-    And I am on that queuer's page
     When I click "Edit"
     And I fill in "" for "Name"
     And I fill in "444-444-4444" for "Phone"

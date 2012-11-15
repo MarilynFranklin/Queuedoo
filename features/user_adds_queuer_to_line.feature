@@ -14,11 +14,14 @@ Feature: User adds Queuer to line
     And I should see "John Smith"
 
   Scenario: Skips name
-    Given 1 line
-    And I am on that line's page
     Then I should see "Add someone to the line"
     When I fill in "" for "Name"
     And I fill in "555-555-5555" for "Phone"
     And I press "Add"
     Then I should see "Name can't be blank"
     And I should see "555-555-5555" in the "Phone" field
+
+  Scenario: Signed out user can't add queuer
+    When I sign out
+    And I am on that line's page
+    Then I should see "You need to sign in or sign up before continuing."
