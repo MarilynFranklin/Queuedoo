@@ -3,7 +3,6 @@ Feature: User Creates Line
   In order to organize an event
   I want to create a line
 
-  @wip
   Scenario: Happy path
     Given I am on the homepage
     And I click "Create Line"

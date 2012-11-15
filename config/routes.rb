@@ -1,4 +1,6 @@
 QueueApp::Application.routes.draw do
+  devise_for :users
+
   root :to => 'lines#index'
 
   resources :lines do
