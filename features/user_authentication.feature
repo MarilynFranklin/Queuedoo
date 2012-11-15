@@ -11,7 +11,7 @@ Feature: User authentication
     Then I should see "Sign Out"
     And I should not see "Sign In"
     And I should not see "Sign Up"
-  
+
   Scenario: Signing up
     Given I am on the homepage
     When I click "Sign Up"
@@ -19,7 +19,8 @@ Feature: User authentication
     And I fill in "foobar" for "Password"
     And I fill in "foobar" for "Password confirmation"
     And I click "Sign up"
-    Then I should see "Welcome! You have signed up successfully."
+    Then show me the page
+    Then I should see "A message with a confirmation link has been sent to your email address. Please open the link to activate your account."
   
   Scenario: Signing up with non-matching passwords
     Given I am on the homepage

@@ -4,16 +4,17 @@ end
 
 Given /^there is a user "(.*?)" with password "(.*?)"$/ do |email, password|
     @user = Fabricate(:user, email: email, password: password, password_confirmation: password)
+    @user.confirm!
 end
 
 Given /^I am signed in as "(.*?)"$/ do |email|
     @user = Fabricate(:user, email: email)
-      sign_in_as @user
+    sign_in_as @user
 end
 
 Given /^I am signed in$/ do
     @user = Fabricate(:user)
-      sign_in_as @user
+    sign_in_as @user
 end
 
 def sign_in_as user
