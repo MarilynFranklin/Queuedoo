@@ -17,6 +17,14 @@ Given /^I am signed in$/ do
     sign_in_as @user
 end
 
+Given /^there is a signed in user "(.*?)" with password "(.*?)"$/ do |email, password|
+  @user = Fabricate(:user, email: email, password: password, password_confirmation: password).save!
+  visit '/users/sign_in'
+  fill_in "user_email", :with => email
+  fill_in "user_password", :with => password
+  click_button "Sign in"
+end
+
 def sign_in_as user
     steps %Q{
       Given I am on the homepage

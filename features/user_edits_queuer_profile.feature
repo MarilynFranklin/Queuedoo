@@ -1,11 +1,13 @@
 Feature: User edits queuer profile
-
-  Scenario: Successful
-    Given 1 line
+  Background:
+    Given there is a signed in user "marilyn@examle.com" with password "notfoobar"
+    And that user has 1 line
     And that line has the following queuer:
       | name  | John Smith   |
       | phone | 555-555-5555 |
     And I am on that queuer's page
+
+  Scenario: Successful
     When I click "Edit"
     And I fill in "Julie Andrews" for "Name"
     And I fill in "444-444-4444" for "Phone"

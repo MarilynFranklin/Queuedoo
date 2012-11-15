@@ -1,6 +1,6 @@
 class QueuersController < ApplicationController
 
-  before_filter :lookup_queuer
+  before_filter :lookup_queuer, :authenticate_user!
   before_filter :lookup_line, except: [:show]
 
   def create

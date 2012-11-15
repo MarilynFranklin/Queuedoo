@@ -1,10 +1,11 @@
+
 Feature: User Creates Line
   As a User
   In order to organize an event
   I want to create a line
 
   Scenario: Happy path
-    Given I am on the homepage
+    Given I am signed in
     And I click "Create Line"
     When I fill in "Great Title" for "Title"
     When I fill in "11/25/2004 10:30AM" for "Start time"
@@ -16,7 +17,7 @@ Feature: User Creates Line
     # And I should see "12/25/2004 10:30AM"
 
   Scenario: User Attempts to skip title
-    Given I am on the homepage
+    Given I am signed in
     And I click "Create Line"
     When I fill in "" for "Title"
     When I fill in "11/25/2004 10:30AM" for "Start"
@@ -27,3 +28,7 @@ Feature: User Creates Line
     And I should see "" in the "Title" field
     And I should see "11/25/2004 10:30AM" in the "Start time" field
     And I should see "12/25/2004 10:30AM" in the "End time" field
+
+  Scenario: Signed out users see appropriate links
+    Given I am on the homepage
+    Then I should not see "Create Line"

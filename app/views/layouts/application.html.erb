@@ -9,6 +9,8 @@
 <body>
 <ul>
   <% if user_signed_in? %>
+    <li><%= link_to "View Lines", lines_path %></li>
+    <li><%= link_to "Create Line", new_line_path %></li>
     <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
   <% else %>
     <li><%= link_to "Sign In", new_user_session_path %></li>

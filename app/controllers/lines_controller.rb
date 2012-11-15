@@ -1,8 +1,9 @@
 class LinesController < ApplicationController
-  before_filter :lookup_line
+  before_filter :lookup_line, except: [:index]
+  before_filter :authenticate_user!
 
   def index
-    @lines = Line.all
+    @lines = Line.where(:user_id => current_user)
   end
 
   def show
@@ -14,6 +15,7 @@ class LinesController < ApplicationController
   end
 
   def create
+    @line.user = current_user
     if @line.save
       flash[:notice] = "Your line has been created"
       redirect_to @line
@@ -34,7 +36,7 @@ class LinesController < ApplicationController
 
   def destroy
     @line.destroy
-    redirect_to :root, notice: "Your line has been deleted"
+    redirect_to lines_path, notice: "Your line has been deleted"
   end
 
   protected

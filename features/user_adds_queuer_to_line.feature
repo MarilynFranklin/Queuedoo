@@ -1,8 +1,10 @@
 Feature: User adds Queuer to line
+  Background:
+    Given there is a signed in user "marilyn@examle.com" with password "notfoobar"
+    And that user has 1 line
+    And I am on that line's page
 
   Scenario: Successful add
-    Given 1 line
-    And I am on that line's page
     Then I should see "Add someone to the line"
     When I fill in "John Smith" for "Name"
     And I fill in "555-555-5555" for "Phone"

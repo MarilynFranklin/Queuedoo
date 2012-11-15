@@ -1,7 +1,9 @@
 QueueApp::Application.routes.draw do
+  get "home/index"
+
   devise_for :users
 
-  root :to => 'lines#index'
+  root :to => 'home#index'
 
   resources :lines do
     resources :queuers, only: [:create, :show, :edit, :update] do

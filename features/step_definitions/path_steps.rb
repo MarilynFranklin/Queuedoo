@@ -6,6 +6,8 @@ def path_to(page_name)
     line_path(@line)
   when "that queuer's page"
     line_queuer_path(@line, @queuer)
+  when "the lines page"
+    lines_path
   else
     raise "Can't find mapping from \"#{page_name}\" to a path.\n" +
                                       "Now, go and add a mapping in #{__FILE__}"

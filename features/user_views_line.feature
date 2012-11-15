@@ -1,25 +1,37 @@
 Feature: User Views Line 
   
-  Scenario: Happy path
-    Given the following lines:
+  Scenario: Signed in user views lines
+    Given there is a signed in user "marilyn@examle.com" with password "notfoobar"
+    And that user has the following lines:
      | title | start_time         | end_time           | 
      | Foo   | 11/25/2004 10:30am | 12/25/2004 10:30am |
      | Bar   | 8/25/2004 10:30am  | 9/25/2004 10:30am  |
-    When I go to the homepage
+    When I click "View Lines"
     Then I should see the title "Foo"
-    #    And I should see the start "11/25/2004 10:30am"
-    #    And I should see the end "12/25/2004 10:30am"
     Then I should see the title "Bar"
-    #    And I should see the start "8/25/2004 10:30am"
-    #    And I should see the end "9/25/2004 10:30am"
+
+  Scenario: Signed out user can't views lines
+    Given there is a signed in user "marilyn@examle.com" with password "notfoobar"
+    And that user has the following lines:
+     | title | start_time         | end_time           | 
+     | Foo   | 11/25/2004 10:30am | 12/25/2004 10:30am |
+     | Bar   | 8/25/2004 10:30am  | 9/25/2004 10:30am  |
+    When I sign out
+    Then I should not see "View Lines"
+    When I go to the lines page
+    Then I should not see "Foo"
+    Then I should not see "Bar"
+    Then I should see "You need to sign in or sign up before continuing."
 
   Scenario: Linking to/from line show page 
-    Given the following line:
-     | title      | foo                |
-     | start_time | 11/25/2004 10:30am |
-     | end_time   | 12/25/2004 10:30am |
-    And I am on the homepage
-    And I click "foo"
+    Given there is a signed in user "marilyn@examle.com" with password "notfoobar"
+    And that user has the following lines:
+     | title | start_time         | end_time           | 
+     | Foo   | 11/25/2004 10:30am | 12/25/2004 10:30am |
+     | Bar   | 8/25/2004 10:30am  | 9/25/2004 10:30am  |
+    When I click "View Lines"
+    And I click "Bar"
     Then I should be on that line's page
-    When I click "View all lines"
-    Then I should be on the homepage
+    Then show me the page
+    When I click "View Lines"
+    Then I should be on the lines page

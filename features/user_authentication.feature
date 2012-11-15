@@ -11,7 +11,6 @@ Feature: User authentication
     Then I should see "Sign Out"
     And I should not see "Sign In"
     And I should not see "Sign Up"
-
   Scenario: Signing up
     Given I am on the homepage
     When I click "Sign Up"

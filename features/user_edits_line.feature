@@ -1,6 +1,7 @@
 Feature: User edits line
   Background:
-    Given the following line:
+    Given there is a signed in user "marilyn@examle.com" with password "notfoobar"
+    And that user has the following line:
      | title      | foo                |
      | start_time | 11/25/2004 10:30am |
      | end_time   | 12/25/2004 10:30am |
