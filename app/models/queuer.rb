@@ -24,12 +24,12 @@ class Queuer < ActiveRecord::Base
   end
 
   def skip!
-    self.place_in_line += 1
     self.next_in_line.move_up!
+    self.place_in_line += 1
     save!
   end
 
   def next_in_line
-    Queuer.where("place_in_line = #{self.place_in_line} AND line_id = #{self.line.id}").first
+    Queuer.where("place_in_line = ? AND line_id = ?", self.place_in_line + 1, self.line.id).first
   end
 end
