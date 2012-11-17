@@ -4,7 +4,7 @@ gem 'rails', '3.2.8'
 gem 'jquery-rails'
 gem 'pg'
 gem 'devise'
-gem "devise-async"
+gem 'twilio-ruby'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -26,6 +26,7 @@ group :test, :development do
   gem 'fabrication'
   gem 'launchy'
   gem 'rspec-rails'
+  gem 'forward'
 end
 
 group :test do
