@@ -13,6 +13,11 @@ QueueApp::Application.routes.draw do
       end
     end
   end
+
+  resources :sub_accounts, only: [:new, :create]
+
+  match "response" => "sub_accounts#twilio_response"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
