@@ -32,4 +32,21 @@ class Queuer < ActiveRecord::Base
   def next_in_line
     Queuer.where("place_in_line = ? AND line_id = ?", self.place_in_line + 1, self.line.id).first
   end
+
+  def text(message)
+    # Instantiate a Twilio client
+    # change in production to use user's sub_account sid and token
+    # http://www.twilio.com/docs/howto/subaccounts
+    client = Twilio::REST::Client.new(TWILIO_CONFIG['sid'], TWILIO_CONFIG['token'])
+
+    # Create and send an SMS message
+    client.account.sms.messages.create(
+
+    # change from to use user's sub_account
+    from: TWILIO_CONFIG['from'],
+    to: self.phone,
+    body: message
+    )
+  end
+
 end
