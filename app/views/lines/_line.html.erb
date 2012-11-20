@@ -1,3 +1,9 @@
-<h1><%= link_to line.title, line  %> </h1>
-<p>Start time: <%=  line.start_time.strftime("%m/%d/%y %H:%M%p") if line.start_time %> </p>
-<p>End time: <%=  line.end_time.strftime("%m/%d/%y %H:%M%p") if line.end_time %> </p>
+<div class="row">
+  <div class="twelve columns centered">
+    <div class="panel">
+      <h1><%= link_to line.title, line  %> </h1>
+      <p>Start time: <%=  line.start_time.strftime("%m/%d/%y %H:%M%p") if line.start_time %> </p>
+      <p>End time: <%=  line.end_time.strftime("%m/%d/%y %H:%M%p") if line.end_time %> </p>
+  </div>
+ </div>
+</div>

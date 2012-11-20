@@ -1,6 +1,21 @@
-<%= link_to 'Edit Line', edit_line_path(@line) %> 
-<%= link_to 'Delete Line', @line, method: :delete, data: { confirm: "Are you sure?" }, title: @line.title %>
+<div class="row">
+  <div class="three columns offset-by-nine">
+    <%= link_to 'Edit Line', edit_line_path(@line) %>
+    |
+    <%= link_to 'Delete Line', @line, method: :delete, data: { confirm: "Are you sure?" }, title: @line.title %>
+  </div>
+</div>
 <%= render @line %>
-<%= render @line.unprocessed_queuers %>
-<p>Add someone to the line</p>
-<%= render partial: 'queuers/form', locals: { queuer: @queuer, submit_text: "Add" } %>
+<div class="row">
+  <div class="seven columns">
+    <div class="panel">
+      <%= render @line.unprocessed_queuers %>
+    </div>
+  </div>
+  <div class="five columns">
+    <div class="panel callout">
+      <p>Add someone to the line</p>
+      <%= render partial: 'queuers/form', locals: { queuer: @queuer, submit_text: "Add" } %>
+    </div>
+  </div>
+</div>

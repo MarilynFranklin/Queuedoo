@@ -5,22 +5,39 @@
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body>
-<ul>
-  <% if user_signed_in? %>
-    <li><%= link_to "View Lines", lines_path %></li>
-    <li><%= link_to "Create Line", new_line_path %></li>
-    <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
-  <% else %>
-    <li><%= link_to "Sign In", new_user_session_path %></li>
-    <li><%= link_to "Sign Up", new_user_registration_path %></li>
+<div class="row">
+  <header class="three columns">
+    <h1>Queuedoo</h1>
+  </header>
+  <nav class="nine columns">
+    <ul class="nav-bar right">
+      <% if user_signed_in? %>
+        <li><%= link_to "View Lines", lines_path %></li>
+        <li><%= link_to "Create Line", new_line_path %></li>
+        <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
+      <% else %>
+        <li><%= link_to "Sign In", new_user_session_path %></li>
+        <li><%= link_to "Sign Up", new_user_registration_path %></li>
+      <% end %>
+    </ul>
+  </nav>
+</div>
+  <% flash.each do |type, message| %>
+    <div id="alert-section" class="row">
+      <div class="alert-box <%= type == :alert ? 'alert' : 'success' %> twelve columns centered">
+       <%= message %>
+       <a href="" class="close">&times;</a>
+     </div>
+    </div>
   <% end %>
-</ul>
-<% flash.each do |type, message| %>
-  <p><%= message %></p>
-<% end %>
-<%= yield %>
+<section>
+  <%= yield %>
+</section>
 
+<footer>
+</footer>
 </body>
 </html>
