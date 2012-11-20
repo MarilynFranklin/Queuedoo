@@ -19,11 +19,14 @@ class SubAccountsController < ApplicationController
   def twilio_response
     @queuer = Queuer.find_by_phone(params['From'])
     body = params['Body'].downcase.strip
-    if body == 'skip'
-      @queuer.skip!
-      response = "You have been moved to next spot in line"
+    if body == 'skip me'
+      if @queuer.skip!
+        response = "You have been moved to next spot in line"
+      else
+        response = "You can't be skipped because you are the last person in line"
+      end
     elsif body == 'options'
-      response = "Text 'skip' if you think you will be late"
+      response = "Text 'skip me' if you think you will be late"
     else
       response = "I'm sorry, I couldn't understand that. Text 'options' for more information"
     end
