@@ -25,9 +25,13 @@ class Queuer < ActiveRecord::Base
   end
 
   def skip!
-    self.next_in_line.move_up!
-    self.place_in_line += 1
-    save!
+    if self.next_in_line
+      self.next_in_line.move_up!
+      self.place_in_line += 1
+      save!
+    else
+      nil
+    end
   end
 
   def next_in_line
