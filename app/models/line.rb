@@ -11,8 +11,9 @@ class Line < ActiveRecord::Base
     unprocessed_queuers.size + 1
   end
 
-  def move_up_queuers
-    unprocessed_queuers.each do |queuer|
+  def move_up_queuers_behind(queuer)
+    next_queuers = Queuer.where("place_in_line > ?", queuer.place_in_line)
+    next_queuers.each do |queuer|
       queuer.place_in_line -= 1
       queuer.save!
     end

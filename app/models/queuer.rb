@@ -13,10 +13,10 @@ class Queuer < ActiveRecord::Base
   end
 
   def process!
+    line.move_up_queuers_behind(self)
     self.processed = true
-    self.place_in_line = nil
+    self.place_in_line = 0
     save!
-    line.move_up_queuers
   end
 
   def move_up!

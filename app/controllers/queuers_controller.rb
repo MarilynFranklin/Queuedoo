@@ -17,8 +17,8 @@ class QueuersController < ApplicationController
   def processed
     @next_up = @queuer.next_in_line
     if @queuer.process!
-      @next_up.text("It's your turn!")
-      redirect_to @line, notice: "Processed. #{@next_up.name} has been texted"
+      @next_up.text("It's your turn!") if @next_up
+      redirect_to @line, notice: "Processed. The next person in line has been texted"
     end
   end
 
