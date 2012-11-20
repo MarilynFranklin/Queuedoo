@@ -19,7 +19,6 @@ QueueApp::Application.configure do
 
   # Generate digests for assets URLs
   config.assets.digest = true
-  config.assets.initialize_on_precompile = false
 
   # Defaults to nil and saved in location specified by config.assets.prefix
   # config.assets.manifest = YOUR_PATH
@@ -50,6 +49,7 @@ QueueApp::Application.configure do
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
+  config.assets.precompile += %w( application.css application.js )
 
   # Enable threaded mode
   # config.threadsafe!
