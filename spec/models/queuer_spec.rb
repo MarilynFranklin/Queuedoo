@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Queuer do
+  include SmsSpec::Helpers
+
   describe "validations" do
     it { should validate_presence_of :name }
     it { should validate_presence_of :phone }
@@ -9,17 +11,26 @@ describe Queuer do
   describe "associations" do
     it { should belong_to :line }
   end
+  describe "#text(message)" do
+    it "should text queuear with the given message" do
+      line = Fabricate :line
+      queuer = Fabricate(:queuer, line: line, name: "John", phone: "+14444444444")
+      queuer.text("Hello there")
+      open_last_text_message_for "+14444444444"
+      current_text_message.should have_body "Hello there"
+    end
+  end
   describe "#process!" do
     context "first person in line is processed" do
       it "should be 0" do
        line = Fabricate :line
        first_queuer = Fabricate(:queuer, line: line, name: "John", phone: "444-444-4444")
-       second_queuer = Fabricate(:queuer, line: line, name: "Mary", phone: "555-555-5555")
+       second_queuer = Fabricate(:queuer, line: line, name: "Mary", phone: "+15555555555")
        third_queuer = Fabricate(:queuer, line: line, name: "Marvin", phone: "333-333-3333")
 
        first_queuer.process!
-       first_queuer.reload.processed.should == true
-       first_queuer.reload.place_in_line.should == 0
+       first_queuer.processed.should == true
+       first_queuer.place_in_line.should == 0
       end
     end
     context "only one person in line" do
