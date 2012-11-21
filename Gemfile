@@ -36,4 +36,5 @@ group :test do
   gem 'database_cleaner'
   gem 'shoulda' 
   gem 'email_spec'
+  gem 'sms-spec'
 end
