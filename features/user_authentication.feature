@@ -18,8 +18,12 @@ Feature: User authentication
     And I fill in "foobar" for "Password"
     And I fill in "foobar" for "Password confirmation"
     And I click "Sign up"
-    Then show me the page
     Then I should see "A message with a confirmation link has been sent to your email address. Please open the link to activate your account."
+    Then save and open all raw emails
+    And "marilyn@example.com" should receive 1 email with subject "Confirmation instructions"
+    When I open the email with subject "Confirmation instructions"
+    And I click the first link in the email
+    Then I should see "Your account was successfully confirmed. You are now signed in."
   
   Scenario: Signing up with non-matching passwords
     Given I am on the homepage

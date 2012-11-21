@@ -35,4 +35,5 @@ group :test do
   gem 'cucumber-rails'
   gem 'database_cleaner'
   gem 'shoulda' 
+  gem 'email_spec'
 end
