@@ -17,21 +17,24 @@ class SubAccountsController < ApplicationController
   # end
 
   def twilio_response
-    @queuer = Queuer.find_by_phone(params['From'])
-    body = params['Body'].downcase.strip
-    if body == 'skip me'
-      if @queuer.skip!
-        response = "You have been moved to next spot in line"
+    if @queuer = Queuer.find_by_phone(params['From'])
+      body = params['Body'].downcase.strip
+      if body == 'skip me'
+        if @queuer.skip!
+          response = "You have been moved to the next spot in line"
+        else
+          response = "You can't be skipped because you are the last person in line"
+        end
+      elsif body == 'options'
+        response = "Text 'skip me' if you think you will be late"
+      elsif body == 'my place in line'
+        response = "Your place in line: #{@queuer.place_in_line}"
       else
-        response = "You can't be skipped because you are the last person in line"
+        response = "I'm sorry, I couldn't understand that. Text 'options' for more information"
       end
-    elsif body == 'options'
-      response = "Text 'skip me' if you think you will be late"
-    else
-      response = "I'm sorry, I couldn't understand that. Text 'options' for more information"
+      @queuer.text(response)
     end
-    @queuer.text(response)
-    head :ok
+      head :status => :ok
   end
 
 end
