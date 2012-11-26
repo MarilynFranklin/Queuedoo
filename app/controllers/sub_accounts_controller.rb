@@ -17,9 +17,11 @@ class SubAccountsController < ApplicationController
   # end
 
   def twilio_response
-    if @queuer = Queuer.find_by_phone(params['From'])
+    if @queuer = Queuer.find_by_formatted_number(params['From'])
       body = params['Body'].downcase.strip
-      if body == 'skip me'
+      if @queuer.processed
+        response = "I'm sorry, you are not currently in line"
+      elsif body == 'skip me'
         if @queuer.skip!
           response = "You have been moved to the next spot in line"
         else

@@ -52,10 +52,27 @@ describe SubAccountsController do
     end
 
     context "user texts 'my place in line'" do
-       it "should reply with 'Your place in line: 1" do
+      it "should reply with 'Your place in line: 1" do
         post :twilio_response, twiml_message(TWILIO_CONFIG['from'], "my place in line", "From" => @first_queuer.phone)
         open_last_text_message_for @first_queuer.phone
         current_text_message.should have_body "Your place in line: 1"
+      end
+    end
+
+    context "user who isn't in line texts app" do
+      it "should reply with 'I'm sorry, you are not currently in line" do
+        @first_queuer.process!
+        post :twilio_response, twiml_message(TWILIO_CONFIG['from'], "my place in line", "From" => @first_queuer.phone)
+        open_last_text_message_for @first_queuer.phone
+        current_text_message.should have_body "I'm sorry, you are not currently in line"
+      end
+    end
+
+    context "user's phone number is not in the database" do
+      it "should not reply" do
+        post :twilio_response, twiml_message(TWILIO_CONFIG['from'], "my place in line", "From" => "+14235555555")
+        open_last_text_message_for "+14235555555"
+        messages_for("+14235555555").should be_empty
       end
     end
 
