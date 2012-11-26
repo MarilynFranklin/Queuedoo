@@ -21,6 +21,13 @@ Feature: User adds Queuer to line
     Then I should see "Name can't be blank"
     And I should see "555-555-5555" in the "Phone" field
 
+  Scenario: User enters non-numeric data for phone number
+    When I fill in "Joe" for "Name"
+    And I fill in "aslkfsjfk" for "Phone"
+    And I press "Add"
+    Then I should see "Please enter a valid phone number"
+    And I should see "Joe" in the "Name" field
+
   Scenario: Signed out user can't add queuer
     When I sign out
     And I am on that line's page

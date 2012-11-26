@@ -2,14 +2,30 @@ class Queuer < ActiveRecord::Base
   attr_accessible :line_id, :name, :phone, :processed
   
   validates_presence_of :name
-  validates :phone, presence:true, uniqueness: true
+  validates :phone, presence:true, uniqueness: true,
+            format: {:with => /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/, message: "Please enter a valid phone number" }
 
   belongs_to :line
 
-  before_save :set_place_in_line
+  before_save :set_place_in_line, :set_formatted_number
 
   def set_place_in_line
     self.place_in_line ||= self.line.next_spot
+  end
+
+  def remove_dashes(phone_number)
+    phone_number.scan(/\d+/).join
+  end
+
+  def format_number
+    # +1 is added as the international code
+    # Used when receiving calls through twilio
+    remove_dashes(phone).size == 10 ? international_code = "+1" : international_code = "+"
+    formatted_number = "#{international_code}#{remove_dashes(phone)}"
+  end
+
+  def set_formatted_number
+    self.formatted_number = format_number
   end
 
   def process!

@@ -6,10 +6,32 @@ describe Queuer do
   describe "validations" do
     it { should validate_presence_of :name }
     it { should validate_presence_of :phone }
+    it { should validate_format_of :phone }
     # it { should validate_uniqueness_of :phone }
   end
   describe "associations" do
     it { should belong_to :line }
+  end
+  context "formatting phone number" do
+    before do
+      @line = Fabricate :line
+    end
+    describe "format_number" do
+      it "should contain international code and contain digits only" do
+        queuer = Fabricate(:queuer, line: @line, name: "John", phone: "444-444-4444")
+        queuer.format_number.should == "+14444444444"
+      end
+      it "should not have exta +1" do
+        queuer = Fabricate(:queuer, line: @line, name: "John", phone: "+1444-444-4444")
+        queuer.format_number.should == "+14444444444"
+      end
+    end
+    describe "formatted_number" do
+      it "should be set to contain international code and contain digits only" do
+        queuer = Fabricate(:queuer, line: @line, name: "John", phone: "(555)-555-5555")
+        queuer.formatted_number.should == "+15555555555"
+      end
+    end
   end
   describe "#text(message)" do
     it "should text queuear with the given message" do
