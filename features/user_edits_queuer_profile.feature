@@ -26,3 +26,10 @@ Feature: User edits queuer profile
     And I should not see "Profile has been updated"
     And I should see "Name can't be blank"
 
+  Scenario: User changes their mind
+    When I click "Edit"
+    And I click "Cancel"
+    Then I should be on that queuer's page
+    And I should see "John Smith"
+    And I should see "555-555-5555"
+    And I should not see "Profile has been updated"
