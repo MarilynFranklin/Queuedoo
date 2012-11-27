@@ -32,6 +32,20 @@ Feature: User searches for previous guest
     And I should see "John has been added to the line"
     And I should not see "Look Up"
 
+  Scenario: User enters phone number for someone already in line
+    Given there is a signed in user "marilyn@examle.com" with password "notfoobar"
+    And that user has 1 line
+    And that user's line has two queuers
+    And I am on that line's page
+    When I press "Previous Guest"
+    Then I should see "Enter phone number:"
+    When I fill in "555-555-5555" for "look_up"
+    And I click "Look Up"
+    Then I should see "That guest is already in line"
+    And I should not see "John Phone: +15555555555"
+    And I should not see "Add To Line"
+    And I should not see "Look Up"
+
   Scenario: User enters phone number that isn't in database
     Given there is a signed in user "marilyn@examle.com" with password "notfoobar"
     And that user has 1 line

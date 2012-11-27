@@ -6,7 +6,11 @@ class QueuersController < ApplicationController
   def index
     guests = current_user.guests.scoped
     if @guest = guests.find_by_formatted_number(@queuer.format_number(params[:look_up]))
-      render 'lines/show'
+      if @guest.line
+        redirect_to @line, alert: "That guest is already in line"
+      else
+        render 'lines/show'
+      end
     else
       redirect_to @line, alert: "Could not find a previous guest with that number"
     end
