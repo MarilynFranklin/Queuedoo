@@ -18,6 +18,7 @@
       <%= link_to_function "New Guest","$('#new_queuer_form').slideToggle();" %>
       <%= link_to_function "Previous Guest", "$('#look_up_by_phone').slideToggle();" %>
       <div id="look_up_by_phone" >
+        <p>Enter phone number:</p>
         <%= form_tag line_queuers_path(@line), method: 'get' do %>
           <%= text_field_tag :look_up, params[:look_up] %>
           <%= submit_tag "Look Up", name: nil %>

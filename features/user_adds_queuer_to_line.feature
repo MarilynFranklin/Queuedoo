@@ -14,21 +14,6 @@ Feature: User adds Queuer to line
     And I should be on that line's page
     And I should see "John Smith"
 
-    @wip
-  Scenario: User successfully adds a previous guest to the line
-    Given that line has two queuers
-    And I am on that line's page
-    And I click "Process"
-    When I press "Previous Guest"
-    And I fill in "+15555555555" for "look_up"
-    And I click "Look Up"
-    And I should see "John Phone: +15555555555"
-    When I click "Add To Line"
-    And show me the page
-    Then I should see "2 John"
-    And I should see "John has been added to the line"
-    And I should not see "Look Up"
-
   Scenario: Skips name
     And I am on that line's page
     When I click "New Guest"
