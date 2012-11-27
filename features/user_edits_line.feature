@@ -27,3 +27,9 @@ Feature: User edits line
     Then I should see "Title can't be blank"
     #    And I should see the start "10/25/2004 10:30am"
     #    And I should see the end "11/25/2004 10:30am"
+
+  Scenario: User changes their mind
+    When I click "Edit Line"
+    And I click "Cancel"
+    Then I should be on that line's page
+    And I should see the title "foo"
