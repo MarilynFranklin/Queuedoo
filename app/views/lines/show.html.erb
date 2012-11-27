@@ -14,7 +14,24 @@
   </div>
   <div class="five columns">
     <div class="panel callout">
-      <p>Add someone to the line</p>
+      <p>Add someone to the line:</p>
+      <%= link_to_function "New Guest","$('#new_queuer_form').slideToggle();" %>
+      <%= link_to_function "Previous Guest", "$('#look_up_by_phone').slideToggle();" %>
+      <div id="look_up_by_phone" >
+        <%= form_tag line_queuers_path(@line), method: 'get' do %>
+          <%= text_field_tag :look_up, params[:look_up] %>
+          <%= submit_tag "Look Up", name: nil %>
+        <% end %>
+      </div>
+      <% if @guest %>
+       <div id="look_up_results">
+         <p><%= "#{@guest.name} Phone: #{@guest.phone}" %></p>
+         <%= form_for [@line, @guest] do |f| %>
+           <%= f.hidden_field :line_id %>
+           <%= f.submit "Add To Line" %>
+         <% end %>
+       </div>
+      <% end %>
       <%= render partial: 'queuers/form', locals: { queuer: @queuer, submit_text: "Add" } %>
     </div>
   </div>

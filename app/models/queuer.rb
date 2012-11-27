@@ -6,6 +6,7 @@ class Queuer < ActiveRecord::Base
             format: {:with => /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/, message: "Please enter a valid phone number" }
 
   belongs_to :line
+  belongs_to :user, foreign_key: 'user_id'
 
   before_save :set_place_in_line, :set_formatted_number
 

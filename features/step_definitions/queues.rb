@@ -1,8 +1,8 @@
 Given "that line has two queuers" do
   line = Line.last
-  Fabricate(:queuer, line: line, name: "John", phone: "+15555555555")
+  Fabricate(:queuer, line: line, name: "John", phone: "+15555555555", user_id: 1)
   line.reload
-  Fabricate(:queuer, line: line, name: "Mary", phone: "+16154444444")
+  Fabricate(:queuer, line: line, name: "Mary", phone: "+16154444444", user_id: 1)
 end
 
 Then "I should see the queue in order" do

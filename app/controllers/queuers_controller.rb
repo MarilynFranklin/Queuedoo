@@ -3,9 +3,15 @@ class QueuersController < ApplicationController
   before_filter :lookup_queuer, :authenticate_user!
   before_filter :lookup_line, except: [:show]
 
+  def index
+    guests = current_user.guests.scoped
+    @guest = guests.find_by_formatted_number(params[:look_up])
+    render 'lines/show'
+  end
+
   def create
     @queuer.line = @line
-
+    @queuer.user = current_user
     if @queuer.save
       redirect_to @line, notice: "You have added someone to the line"
     else
@@ -29,7 +35,15 @@ class QueuersController < ApplicationController
 
   def update
     if @queuer.update_attributes(params[:queuer])
-      redirect_to [@line, @queuer], notice: "Profile has been updated"
+      if params[:queuer][:line_id]
+        @queuer.line = @line
+        @queuer.processed = "false"
+        @queuer.place_in_line = @line.next_spot
+        @queuer.save!
+        redirect_to @line, notice: "#{@queuer.name} has been added to the line"
+      else
+        redirect_to [@line, @queuer], notice: "Profile has been updated"
+      end
     else
       flash[:error] = @queuer.errors.full_messages.join
       render :edit

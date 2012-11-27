@@ -6,7 +6,7 @@ QueueApp::Application.routes.draw do
   root :to => 'home#index'
 
   resources :lines do
-    resources :queuers, only: [:create, :show, :edit, :update] do
+    resources :queuers, only: [:create, :show, :edit, :update, :index] do
       member do
         put 'processed'
         put 'skip'

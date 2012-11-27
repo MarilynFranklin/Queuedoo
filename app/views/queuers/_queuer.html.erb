@@ -1,8 +1,8 @@
-  <div class="eight columns">
+<div class="eight columns">
   <%= queuer.place_in_line %>
   <%= link_to queuer.name, [queuer.line, queuer]%>
 </div>
-  <ul class="button-group">
-    <li><%= link_to "Process", [:processed, queuer.line, queuer], method: :put, class: "button small" %></li>
-    <li><%= link_to "Skip", [:skip, queuer.line, queuer], method: :put, class: "button small" %></li>
-  </ul>
+<ul class="button-group">
+  <li><%= link_to "Process", [:processed, queuer.line, queuer], method: :put, class: "button small" %></li>
+  <li><%= link_to "Skip", [:skip, queuer.line, queuer], method: :put, class: "button small" %></li>
+</ul>

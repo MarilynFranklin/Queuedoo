@@ -11,6 +11,7 @@ describe Queuer do
   end
   describe "associations" do
     it { should belong_to :line }
+    it { should belong_to :user }
   end
   context "formatting phone number" do
     before do
