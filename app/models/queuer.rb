@@ -32,6 +32,7 @@ class Queuer < ActiveRecord::Base
   def process!
     line.move_up_queuers_behind(self)
     self.processed = true
+    self.line = nil
     self.place_in_line = 0
     save!
   end
