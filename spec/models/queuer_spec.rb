@@ -20,11 +20,11 @@ describe Queuer do
     describe "format_number" do
       it "should contain international code and contain digits only" do
         queuer = Fabricate(:queuer, line: @line, name: "John", phone: "444-444-4444")
-        queuer.format_number.should == "+14444444444"
+        queuer.format_number("444-444-4444").should == "+14444444444"
       end
       it "should not have exta +1" do
         queuer = Fabricate(:queuer, line: @line, name: "John", phone: "+1444-444-4444")
-        queuer.format_number.should == "+14444444444"
+        queuer.format_number("+1444-444-4444").should == "+14444444444"
       end
     end
     describe "formatted_number" do
