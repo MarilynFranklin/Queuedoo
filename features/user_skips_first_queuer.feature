@@ -9,3 +9,10 @@ Feature: User skips first queuer
   Scenario: first user is skipped
     When I click "Skip"
     Then I should see the first two queuers switch places
+    And I should see "Mary has been texted"
+    When "+16154444444" opens the text message
+    Then I should see "It's your turn!" in the text message body
+
+  Scenario: user can't skip last user
+    When I click "Process"
+    Then I should not see "Skip"

@@ -10,6 +10,7 @@ Feature: User dequeues queuer
     Then I should not see "John"
     And I should see "Processed"
     And I should see "Mary"
+    And I should see "Successfully Processed! Mary has been texted"
     When "+16154444444" opens the text message
     Then I should see "It's your turn!" in the text message body
 
@@ -19,3 +20,5 @@ Feature: User dequeues queuer
     When I click "Process"
     Then I should not see "Mary"
     And "+15555555555" should receive no text messages
+    And I should not see "has been texted"
+    And I should see "Successfully Processed!"

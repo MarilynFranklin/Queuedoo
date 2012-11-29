@@ -2,6 +2,7 @@ class QueuersController < ApplicationController
 
   before_filter :lookup_queuer, :authenticate_user!
   before_filter :lookup_line, except: [:show]
+  before_filter :lookup_next_in_line, only: [:skip, :processed]
 
   def index
     guests = current_user.guests.scoped
@@ -28,16 +29,21 @@ class QueuersController < ApplicationController
   end
 
   def processed
-    @next_up = @queuer.next_in_line
     if @queuer.process!
-      @next_up.text("It's your turn!") if @next_up
-      redirect_to @line, notice: "Processed. The next person in line has been texted"
+      if @next_up
+        @next_up.text("It's your turn!")
+        flash[:notice] = "Successfully Processed! #{@next_up.name} has been texted"
+      else
+        flash[:notice] = "Successfully Processed!"
+      end
+      redirect_to @line
     end
   end
 
   def skip
     @queuer.skip!
-    redirect_to @line
+    @next_up.text("It's your turn!")
+    redirect_to @line, notice: "#{@next_up.name} has been texted"
   end
 
   def update
@@ -70,4 +76,9 @@ class QueuersController < ApplicationController
   def lookup_line
     @line = Line.find(params[:line_id])
   end
+
+  def lookup_next_in_line
+    @next_up = @queuer.next_in_line
+  end
+
 end

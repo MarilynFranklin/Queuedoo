@@ -4,5 +4,7 @@
 </div>
 <ul class="button-group">
   <li><%= link_to "Process", [:processed, queuer.line, queuer], method: :put, class: "button small" %></li>
-  <li><%= link_to "Skip", [:skip, queuer.line, queuer], method: :put, class: "button small" %></li>
+  <% unless queuer.last? %>
+    <li><%= link_to "Skip", [:skip, queuer.line, queuer], method: :put, class: "button small" %></li>
+  <% end %>
 </ul>

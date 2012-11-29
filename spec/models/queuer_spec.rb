@@ -43,6 +43,20 @@ describe Queuer do
       current_text_message.should have_body "Hello there"
     end
   end
+  describe "#line?" do
+    before do
+      line = Fabricate :line
+      @first_queuer = Fabricate(:queuer, line: line, name: "John", phone: "444-444-4444")
+      line.reload
+      @second_queuer = Fabricate(:queuer, line: line, name: "Mary", phone: "+15555555555")
+    end
+    it "should be true" do
+      @first_queuer.last?.should == false
+    end
+    it "should be false" do
+      @second_queuer.last?.should == true
+    end
+  end
   describe "#process!" do
     context "first person in line is processed" do
       it "should be 0" do
