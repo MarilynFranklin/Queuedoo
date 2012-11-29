@@ -25,6 +25,7 @@ Feature: User authentication
     When I open the email with subject "Confirmation instructions"
     And I click the first link in the email
     Then I should see "Your account was successfully confirmed. You are now signed in."
+    And I should see "Looks like you don't have any lines yet. Click 'Create Line' to get started!"
   
   Scenario: Signing up with non-matching passwords
     Given I am on the homepage

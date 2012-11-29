@@ -3,6 +3,7 @@ QueueApp::Application.routes.draw do
 
   devise_for :users
 
+  root to: "lines#index", constraints: lambda { |r| r.env["warden"].authenticate? }
   root :to => 'home#index'
 
   resources :lines do

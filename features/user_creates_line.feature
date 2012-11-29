@@ -1,4 +1,3 @@
-
 Feature: User Creates Line
   As a User
   In order to organize an event

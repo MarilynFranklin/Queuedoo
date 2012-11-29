@@ -9,6 +9,7 @@ Feature: User Views Line
     When I click "View Lines"
     Then I should see the title "Foo"
     Then I should see the title "Bar"
+    And I should not see "Looks like you don't have any lines yet. Click 'Create Line' to get started!"
 
   Scenario: Signed out user can't views lines
     Given there is a signed in user "marilyn@examle.com" with password "notfoobar"
