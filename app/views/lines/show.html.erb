@@ -9,6 +9,9 @@
 <div class="row">
   <div class="seven columns">
     <div class="panel">
+      <% unless @line.unprocessed_queuers.first %>
+        <p>No one is in line yet! Use the panel to the right to add a guest.</p>
+      <% end %>
       <%= render @line.unprocessed_queuers %>
     </div>
   </div>

@@ -7,9 +7,6 @@ class Line < ActiveRecord::Base
   has_many :unprocessed_queuers, class_name: "Queuer", conditions: { processed: false }, order: "place_in_line ASC"
 
   belongs_to :user
-  def next_spot
-    unprocessed_queuers.size + 1
-  end
 
   def move_up_queuers_behind(queuer)
     next_queuers = Queuer.where("place_in_line > ?", queuer.place_in_line)
@@ -17,5 +14,13 @@ class Line < ActiveRecord::Base
       queuer.place_in_line -= 1
       queuer.save!
     end
+  end
+
+  def next_spot
+    number_of_queuers + 1
+  end
+
+  def number_of_queuers
+    unprocessed_queuers.size
   end
 end

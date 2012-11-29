@@ -5,12 +5,16 @@ Feature: User adds Queuer to line
 
   Scenario: User successfully adds a new guest to the line 
     And I am on that line's page
-    Then I should see "Add someone to the line:"
+    Then I should see "No one is in line yet! Use the panel to the right to add a guest."
+    And I should see "People in line: 0"
+    And I should see "Add someone to the line:"
     When I click "New Guest"
     And I fill in "John Smith" for "Name"
     And I fill in "555-555-5555" for "Phone"
     And I press "Add"
     Then I should see "You have added someone to the line"
+    And I should not see "No one is in line yet! Use the panel to the right to add a guest."
+    And I should see "People in line: 1"
     And I should be on that line's page
     And I should see "John Smith"
 
