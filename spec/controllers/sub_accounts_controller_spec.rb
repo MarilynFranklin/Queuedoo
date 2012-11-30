@@ -87,6 +87,17 @@ describe SubAccountsController do
       end
     end
 
+    context "user who is in the database texts 'party of 5' and line allows text to join" do
+      it "should reply with 'Place in line: 3'" do
+        @first_queuer.process!
+        @line.text_to_join = true
+        @line.save!
+        post :twilio_response, twiml_message(TWILIO_CONFIG['from'], "join line: party of 5. name: Jill", "From" => @first_queuer.phone)
+        open_last_text_message_for @first_queuer.phone
+        current_text_message.should have_body "Place in line: 2"
+      end
+    end
+
     context "user who isn't in line texts 'party of 5' and line doesn't allows text to join" do
       it "should not reply" do
         post :twilio_response, twiml_message(TWILIO_CONFIG['from'], "join line: party of 5. name: Jill", "From" => "+14235555555")

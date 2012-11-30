@@ -34,8 +34,15 @@ class Queuer < ActiveRecord::Base
   end
 
   def generate_response(message)
-    return "I'm sorry, you are not currently in line" if processed
+    return "I'm sorry, you are not currently in line" if processed && !/^join line/.match(message)
     case message
+    when /^join line: (.*?). name: (.*?)$/
+      line = Line.find(:all, :conditions => ['title LIKE ?', "%#{$1}%"]).first
+      self.line = line
+      self.processed = false
+      self.place_in_line = line.next_spot
+      save!
+      "Place in line: #{place_in_line}"
     when 'skip me'
       attempt_skip
     when 'options'
