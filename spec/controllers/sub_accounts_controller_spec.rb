@@ -6,9 +6,9 @@ describe SubAccountsController do
   describe "POST 'response'" do
 
     before do
-      line = Line.create(title: "long line")
-      @first_queuer = Queuer.create!(line_id: line.id, name: "John", phone: "+14444444444")
-      @second_queuer = Queuer.create!(line_id: line.id, name: "Mary", phone: "+15555555555")
+      @line = Line.create(title: "party of 5")
+      @first_queuer = Queuer.create!(line_id: @line.id, name: "John", phone: "+14444444444")
+      @second_queuer = Queuer.create!(line_id: @line.id, name: "Mary", phone: "+15555555555")
     end
 
     context "user texts 'skip me'" do
@@ -70,8 +70,26 @@ describe SubAccountsController do
 
     context "user's phone number is not in the database" do
       it "should not reply" do
-        post :twilio_response, twiml_message(TWILIO_CONFIG['from'], "my place in line", "From" => "+14235555555")
-        open_last_text_message_for "+14235555555"
+        number = "+14231234567"
+        post :twilio_response, twiml_message(TWILIO_CONFIG['from'], "my place in line", "From" => number)
+        messages_for(number).should be_empty
+      end
+    end
+
+    context "user who isn't in line texts 'party of 5' and line allows text to join" do
+      it "should reply with 'Place in line: 3'" do
+        phone = "+14231234567"
+        @line.text_to_join = true
+        @line.save!
+        post :twilio_response, twiml_message(TWILIO_CONFIG['from'], "join line: party of 5. name: Jill", "From" => phone)
+        open_last_text_message_for phone
+        current_text_message.should have_body "Place in line: 3"
+      end
+    end
+
+    context "user who isn't in line texts 'party of 5' and line doesn't allows text to join" do
+      it "should not reply" do
+        post :twilio_response, twiml_message(TWILIO_CONFIG['from'], "join line: party of 5. name: Jill", "From" => "+14235555555")
         messages_for("+14235555555").should be_empty
       end
     end

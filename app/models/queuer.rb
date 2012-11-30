@@ -10,6 +10,14 @@ class Queuer < ActiveRecord::Base
 
   before_save :set_place_in_line, :set_formatted_number
 
+  def attempt_skip
+    if skip!
+      "You have been moved to the next spot in line"
+    else
+      "You can't be skipped because you are the last person in line"
+    end
+  end
+
   def set_place_in_line
     self.place_in_line ||= self.line.next_spot
   end
@@ -23,6 +31,20 @@ class Queuer < ActiveRecord::Base
     # Used when receiving calls through twilio
     remove_dashes(phone_number).size == 10 ? international_code = "+1" : international_code = "+"
     formatted_number = "#{international_code}#{remove_dashes(phone_number)}"
+  end
+
+  def generate_response(message)
+    return "I'm sorry, you are not currently in line" if processed
+    case message
+    when 'skip me'
+      attempt_skip
+    when 'options'
+      "Text 'skip me' if you think you will be late"
+    when 'my place in line'
+      "Your place in line: #{place_in_line}"
+    else
+       "I'm sorry, I couldn't understand that. Text 'options' for more information"
+    end
   end
 
   def set_formatted_number

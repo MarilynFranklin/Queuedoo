@@ -12,4 +12,10 @@ class SubAccount < ActiveRecord::Base
   #   self.twilio_account_sid = @subaccount.sid
   #   self.twilio_auth_token  = @subaccount.auth_token
   # end
+
+  def parse(message)
+    if message =~ /^join line: (.*?). name: (.*?)$/
+      { title: $1, name: $2 }
+    end
+  end
 end

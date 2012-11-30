@@ -17,24 +17,21 @@ class SubAccountsController < ApplicationController
   # end
 
   def twilio_response
+    body = params['Body'].downcase.strip
+    subaccount = SubAccount.new
     if @queuer = Queuer.find_by_formatted_number(params['From'])
-      body = params['Body'].downcase.strip
-      if @queuer.processed
-        response = "I'm sorry, you are not currently in line"
-      elsif body == 'skip me'
-        if @queuer.skip!
-          response = "You have been moved to the next spot in line"
-        else
-          response = "You can't be skipped because you are the last person in line"
-        end
-      elsif body == 'options'
-        response = "Text 'skip me' if you think you will be late"
-      elsif body == 'my place in line'
-        response = "Your place in line: #{@queuer.place_in_line}"
-      else
-        response = "I'm sorry, I couldn't understand that. Text 'options' for more information"
-      end
+      response = @queuer.generate_response(body)
       @queuer.text(response)
+    else
+      if message = subaccount.parse(body)
+        # in production: find user where their subaccount twilio number matches params['To']
+        # then query for a line that has the requested title and belongs to the user account
+        # and remove :all from the find parameter below
+        @line = Line.find(:all, :conditions => ['title LIKE ?', "%#{message[:title]}%"]).first
+        return head status: :ok unless @line.text_to_join
+        guest = Queuer.create!(name: message[:name], phone: params['From'], line_id: @line.id)
+        guest.text("Place in line: #{guest.place_in_line}")
+      end
     end
       head :status => :ok
   end
