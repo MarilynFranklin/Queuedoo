@@ -1,9 +1,10 @@
 class LinesController < ApplicationController
   before_filter :lookup_line, except: [:index]
   before_filter :authenticate_user!
+  before_filter :incorrect_user_redirect, except: [:index, :new, :create]
 
   def index
-    @lines = Line.where(:user_id => current_user)
+    @lines = Line.where(:user_id => current_user).order('created_at desc')
   end
 
   def show
@@ -59,4 +60,9 @@ class LinesController < ApplicationController
       @line = Line.new(params[:line])
     end
   end
+
+  def incorrect_user_redirect
+    redirect_to :root if @line.user != current_user
+  end
+
 end

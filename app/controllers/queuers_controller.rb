@@ -3,6 +3,7 @@ class QueuersController < ApplicationController
   before_filter :lookup_queuer, :authenticate_user!
   before_filter :lookup_line, except: [:show]
   before_filter :lookup_next_in_line, only: [:skip, :processed]
+  before_filter :incorrect_user_redirect, except: [:index, :create, :processed, :skip]
 
   def index
     guests = current_user.guests.scoped
@@ -64,6 +65,10 @@ class QueuersController < ApplicationController
   end
 
   protected
+
+  def incorrect_user_redirect
+    redirect_to :root if @queuer.user != current_user
+  end
 
   def lookup_queuer
     if params[:id]

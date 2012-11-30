@@ -14,6 +14,13 @@ Given "that user's line has two queuers" do
   Fabricate(:queuer, line: line, name: "Mary", phone: "+16154444444", user_id: user.id)
 end
 
+And "that queuer belongs to the user" do
+  user = User.last
+  queuer = Queuer.last
+  queuer.user_id = user.id
+  queuer.save!
+end
+
 Then "I should see the queue in order" do
   queuers = Line.last.queuers
 

@@ -5,6 +5,7 @@ Feature: User views queuer profile
     And that line has the following queuer:
       | name  | John Smith   |
       | phone | 555-555-5555 |
+    And that queuer belongs to the user
 
   Scenario: Successful
     And I am on that line's page
