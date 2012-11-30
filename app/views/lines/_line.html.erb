@@ -1,10 +1,20 @@
 <div class="row">
   <div class="twelve columns centered">
     <div class="panel">
-      <h1><%= link_to line.title, line  %> </h1>
+      <div class="row">
+      <h1 class="nine columns"><%= link_to line.title, line  %> </h1>
+      <div id="text_to_join_status" class="three columns">
+        <p>
+        Text to Join:
+        <% if line.text_to_join %>
+          <span class="round label">enabled</span>
+        <% else %>
+          <span class="round label alert">disabled</span>
+        <% end %>
+        </p>
+      </div>
+      </div>
       <p>People in line: <%= line.number_of_queuers %></p>
-      <p>Start time: <%=  line.start_time.strftime("%m/%d/%y %H:%M%p") if line.start_time %> </p>
-      <p>End time: <%=  line.end_time.strftime("%m/%d/%y %H:%M%p") if line.end_time %> </p>
+    </div>
   </div>
- </div>
 </div>

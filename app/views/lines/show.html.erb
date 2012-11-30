@@ -1,8 +1,15 @@
 <div class="row">
-  <div class="three columns offset-by-nine">
-    <%= link_to 'Edit Line', edit_line_path(@line) %>
-    |
-    <%= link_to 'Delete Line', @line, method: :delete, data: { confirm: "Are you sure?" }, title: @line.title %>
+
+  <div class="twelve columns centered">
+    <ul class="button-group">
+    <% if @line.text_to_join %>
+      <li><%= link_to "Disable Text to Join", toggle_texting_line_path(@line), method: 'put', class: "button" %></li>
+    <% else %>
+      <li><%= link_to "Enable Text to Join", toggle_texting_line_path(@line), method: 'put', class: "button" %></li>
+    <% end %>
+    <li><%= link_to 'Edit Line', edit_line_path(@line), class: "button" %></li>
+    <li><%= link_to 'Delete Line', @line, method: :delete, data: { confirm: "Are you sure?" }, title: @line.title, class: "button" %></li>
+    </ul>
   </div>
 </div>
 <%= render @line %>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121127031409) do
+ActiveRecord::Schema.define(:version => 20121129050116) do
 
   create_table "lines", :force => true do |t|
     t.string   "title"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(:version => 20121127031409) do
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
     t.integer  "user_id"
+    t.boolean  "text_to_join"
   end
 
   create_table "queuers", :force => true do |t|

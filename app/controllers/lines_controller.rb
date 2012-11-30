@@ -39,6 +39,17 @@ class LinesController < ApplicationController
     redirect_to lines_path, notice: "Your line has been deleted"
   end
 
+  def toggle_texting
+    if @line.text_to_join
+      @line.text_to_join = false
+      @line.save!
+    else
+      @line.text_to_join = true
+      @line.save!
+    end
+    redirect_to @line
+  end
+
   protected
 
   def lookup_line

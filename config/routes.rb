@@ -7,6 +7,9 @@ QueueApp::Application.routes.draw do
   root :to => 'home#index'
 
   resources :lines do
+    member do
+      put 'toggle_texting'
+    end
     resources :queuers, only: [:create, :show, :edit, :update, :index] do
       member do
         put 'processed'
