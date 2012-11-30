@@ -1,4 +1,10 @@
-<%= link_to "View Line", line_path(@queuer.line) %>
-<%= link_to "Edit", [:edit, @queuer.line, @queuer] %>
-<p> Name: <%= @queuer.name %></p>
-<p> Phone: <%= @queuer.phone %></p>
+<div class="row">
+  <div class="five columns centered">
+    <div class="panel">
+      <p> Name: <%= @queuer.name %></p>
+      <p> Phone: <%= number_to_phone @queuer.phone %></p>
+      <%= link_to "Edit", [:edit, @queuer.line, @queuer], class: "button" %>
+      <%= link_to "View Line", line_path(@queuer.line), class: "secondary button" %>
+    </div>
+  </div>
+</div>

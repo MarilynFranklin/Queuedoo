@@ -1,9 +1,8 @@
-<div id="new_queuer_form">
-  <%= form_for [@line, queuer] do |f| %>
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-    <%= f.label :phone %>
-    <%= f.text_field :phone %>
-    <%= f.submit submit_text %>
-  <%- end %>
-</div>
+<%= form_for [@line, queuer] do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+  <%= f.label :phone %>
+  <%= f.text_field :phone %>
+  <ul class="button-group">
+    <li><%= f.submit submit_text, class: "button" %></li>
+<%- end %>

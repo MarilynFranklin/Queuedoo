@@ -1,2 +1,9 @@
-<%= render partial: "queuers/form", locals: { queuer: @queuer, submit_text: "Update" } %>
-<%= link_to "Cancel", [@line, @queuer] %>
+<div class="row">
+  <div class="five columns centered">
+    <div class="panel">
+      <%= render partial: "queuers/form", locals: { queuer: @queuer, submit_text: "Update" } %>
+        <li><%= link_to "Cancel", :back, class: "secondary button" %></li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,10 @@
 <% unless @lines.first %>
-  <p>Looks like you don't have any lines yet. Click 'Create Line' to get started!</p>
+  <div class="row">
+    <div id="prompt" class="seven columns centered">
+      <div id="prompt" class="panel">
+        <p><span id="get_started_prompt">Looks like you don't have any lines yet. Click 'Create Line' to get started!</span></p>
+      </div>
+    </div>
+  </div>
 <% end %>
 <%= render @lines %>

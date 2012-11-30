@@ -1,5 +1,24 @@
 @import url(http://fonts.googleapis.com/css?family=Pacifico);
+@import url(http://fonts.googleapis.com/css?family=Julius+Sans+One|Open+Sans);
 $cursive_font: 'Pacifico';
+$title_font: 'Julius Sans One', sans-serif;
+
+h1, h2, h3, h4, span#get_started_prompt{
+  font-family: $title_font
+}
+
+h4{
+  font-size: 16px;
+}
+
+span#get_started_prompt{
+  font-size: 20px;
+}
+
+p{
+  font-family: 'Open Sans';
+  font-size: 16px;
+}
 
 ul{
   list-style-type: none;
@@ -38,6 +57,17 @@ section{
   }
 }
 
+div#prompt{
+  text-align: center;
+  margin-top: 100px;
+  p{
+    padding: 50px 0 50px 0;
+  }
+}
+
 div#new_queuer_form, div#look_up_by_phone{
   display: none;
+}
+div.focus{
+  top-margin: 100px;
 }

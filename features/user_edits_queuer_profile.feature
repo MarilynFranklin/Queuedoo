@@ -4,13 +4,14 @@ Feature: User edits queuer profile
     And that user has 1 line
     And that line has the following queuer:
       | name  | John Smith   |
-      | phone | 555-555-5555 |
+      | phone | 5555555555   |
+    And that queuer belongs to the user
     And I am on that queuer's page
 
   Scenario: Successful
     When I click "Edit"
     And I fill in "Julie Andrews" for "Name"
-    And I fill in "444-444-4444" for "Phone"
+    And I fill in "4444444444" for "Phone"
     And I press "Update"
     Then I should see "Julie Andrews"
     And I should see "444-444-4444"
