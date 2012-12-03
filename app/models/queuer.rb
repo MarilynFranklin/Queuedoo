@@ -1,5 +1,5 @@
 class Queuer < ActiveRecord::Base
-  attr_accessible :line_id, :name, :phone, :processed
+  attr_accessible :line_id, :name, :phone, :processed, :user_id
   
   validates_presence_of :name
   validates :phone, presence:true, uniqueness: true,
@@ -15,6 +15,19 @@ class Queuer < ActiveRecord::Base
       "You have been moved to the next spot in line"
     else
       "You can't be skipped because you are the last person in line"
+    end
+  end
+
+  def attempt_to_join(line)
+    if line.text_to_join
+      self.line = line
+      self.user = line.user
+      self.processed = false
+      self.place_in_line = line.next_spot
+      save!
+      "Place in line: #{place_in_line}"
+    else
+      "The owner of that line does not allow Text To Join at this time"
     end
   end
 
@@ -38,11 +51,7 @@ class Queuer < ActiveRecord::Base
     case message
     when /^join line: (.*?). name: (.*?)$/
       line = Line.find(:all, :conditions => ['title LIKE ?', "%#{$1}%"]).first
-      self.line = line
-      self.processed = false
-      self.place_in_line = line.next_spot
-      save!
-      "Place in line: #{place_in_line}"
+      attempt_to_join(line)
     when 'skip me'
       attempt_skip
     when 'options'

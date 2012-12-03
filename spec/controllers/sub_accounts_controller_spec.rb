@@ -6,7 +6,9 @@ describe SubAccountsController do
   describe "POST 'response'" do
 
     before do
-      @line = Line.create(title: "party of 5")
+      @line = Line.create(title: "long line")
+      @user = Fabricate :user
+      @line.user = @user
       @first_queuer = Queuer.create!(line_id: @line.id, name: "John", phone: "+14444444444")
       @second_queuer = Queuer.create!(line_id: @line.id, name: "Mary", phone: "+15555555555")
     end
@@ -76,32 +78,58 @@ describe SubAccountsController do
       end
     end
 
-    context "user who isn't in line texts 'party of 5' and line allows text to join" do
+    context "user who isn't in database texts 'party of 1' and line allows text to join" do
       it "should reply with 'Place in line: 3'" do
         phone = "+14231234567"
         @line.text_to_join = true
+        @line.title = 'party of 1'
         @line.save!
-        post :twilio_response, twiml_message(TWILIO_CONFIG['from'], "join line: party of 5. name: Jill", "From" => phone)
+        post :twilio_response, twiml_message(TWILIO_CONFIG['from'], "join line: party of 1. name: Jill", "From" => phone)
         open_last_text_message_for phone
         current_text_message.should have_body "Place in line: 3"
+        new_queuer = Queuer.last
+        new_queuer.line.should == @line
+        new_queuer.user.should == @line.user
       end
     end
 
-    context "user who is in the database texts 'party of 5' and line allows text to join" do
-      it "should reply with 'Place in line: 3'" do
+    context "user who is in the database texts 'party of 2' and line allows text to join" do
+      it "should reply with 'Place in line: 2'" do
         @first_queuer.process!
         @line.text_to_join = true
+        @line.title = 'party of 2'
         @line.save!
-        post :twilio_response, twiml_message(TWILIO_CONFIG['from'], "join line: party of 5. name: Jill", "From" => @first_queuer.phone)
+        post :twilio_response, twiml_message(TWILIO_CONFIG['from'], "join line: party of 2. name: Jill", "From" => @first_queuer.phone)
         open_last_text_message_for @first_queuer.phone
         current_text_message.should have_body "Place in line: 2"
+        first_queuer = Queuer.find_by_phone(@first_queuer.phone)
+        first_queuer.line.should == @line
+        first_queuer.user.should == @line.user
       end
     end
 
-    context "user who isn't in line texts 'party of 5' and line doesn't allows text to join" do
+    context "user who is in the database texts 'party of 3' and line doesn't allow text to join" do
+      it "should reply with 'The owner of that line does not allow Text To Join at this time'" do
+        @first_queuer.process!
+        @line.title = 'party of 3'
+        @line.save!
+        post :twilio_response, twiml_message(TWILIO_CONFIG['from'], "join line: party of 3. name: Jill", "From" => @first_queuer.phone)
+        open_last_text_message_for @first_queuer.phone
+        current_text_message.should have_body "The owner of that line does not allow Text To Join at this time"
+        first_queuer = Queuer.find_by_phone(@first_queuer.phone)
+        first_queuer.line.should_not == @line
+        first_queuer.user.should_not == @line.user
+      end
+    end
+
+    context "user who isn't in line texts 'party of 4' and line doesn't allows text to join" do
       it "should not reply" do
-        post :twilio_response, twiml_message(TWILIO_CONFIG['from'], "join line: party of 5. name: Jill", "From" => "+14235555555")
-        messages_for("+14235555555").should be_empty
+        @line.title = 'party of 4'
+        @line.save!
+        post :twilio_response, twiml_message(TWILIO_CONFIG['from'], "join line: party of 4. name: Jill", "From" => "+14238888888")
+        messages_for("+14238888888").should be_empty
+        queuer = Queuer.last
+        queuer.phone.should_not == "+14238888888"
       end
     end
 

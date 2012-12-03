@@ -21,7 +21,7 @@ class SubAccountsController < ApplicationController
     subaccount = SubAccount.new
     if @queuer = Queuer.find_by_formatted_number(params['From'])
       response = @queuer.generate_response(body)
-      @queuer.text(response)
+      @queuer.text(response) if response
     else
       if message = subaccount.parse(body)
         # in production: find user where their subaccount twilio number matches params['To']
@@ -29,7 +29,7 @@ class SubAccountsController < ApplicationController
         # and remove :all from the find parameter below
         @line = Line.find(:all, :conditions => ['title LIKE ?', "%#{message[:title]}%"]).first
         return head status: :ok unless @line.text_to_join
-        guest = Queuer.create!(name: message[:name], phone: params['From'], line_id: @line.id)
+        guest = Queuer.create!(name: message[:name], phone: params['From'], line_id: @line.id, user_id: @line.user_id)
         guest.text("Place in line: #{guest.place_in_line}")
       end
     end
