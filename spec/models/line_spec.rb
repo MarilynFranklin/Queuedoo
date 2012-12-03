@@ -10,6 +10,29 @@ describe Line do
     it { should belong_to :user }
   end
 
+  describe "#first_queuer" do
+    before do
+      @line = Fabricate :line
+      @first_queuer = Fabricate(:queuer, line: @line, name: "John", phone: "444-444-4444")
+      @line.reload
+      @second_queuer = Fabricate(:queuer, line: @line, name: "Mary", phone: "+15555555555")
+    end
+
+    context "line has queuers" do
+      it "should be first_queuer" do
+        @line.first_queuer.should == @first_queuer
+      end
+    end
+
+    context "line doesn't have queuers" do
+      it "should be nil" do
+        line = Fabricate :line
+        line.first_queuer.should == nil
+      end
+    end
+
+  end
+
   describe "#move_up_queuers_behind" do
     before do
       line = Fabricate :line

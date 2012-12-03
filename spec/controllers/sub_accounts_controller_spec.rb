@@ -19,6 +19,8 @@ describe SubAccountsController do
         post :twilio_response, twiml_message(TWILIO_CONFIG['from'], "skip me", "From" => @first_queuer.phone)
         open_last_text_message_for @first_queuer.phone
         current_text_message.should have_body "You have been moved to the next spot in line"
+        open_last_text_message_for @second_queuer.phone
+        current_text_message.should have_body "It's your turn!"
       end
 
       it "should respond with 'You can't be skipped because you are the last person in line'" do

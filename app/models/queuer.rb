@@ -12,6 +12,7 @@ class Queuer < ActiveRecord::Base
 
   def attempt_skip
     if skip!
+      line.first_queuer.text("It's your turn!")
       "You have been moved to the next spot in line"
     else
       "You can't be skipped because you are the last person in line"
