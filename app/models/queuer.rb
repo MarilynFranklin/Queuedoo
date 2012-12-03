@@ -95,6 +95,10 @@ class Queuer < ActiveRecord::Base
     Queuer.where("place_in_line = ? AND line_id = ?", self.place_in_line + 1, self.line.id).first
   end
 
+  def next_queuers
+    Queuer.where("place_in_line > ? AND line_id = ?", place_in_line, line_id)
+  end
+
   def last?
     next_in_line ? false : true
   end

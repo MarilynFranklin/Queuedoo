@@ -34,6 +34,37 @@ describe Queuer do
       end
     end
   end
+
+  describe "#next_queuers" do
+    before do
+      @line = Fabricate :line
+      @first_queuer = Fabricate(:queuer, line: @line, name: "John", phone: "444-444-4444")
+      @line.reload
+      @second_queuer = Fabricate(:queuer, line: @line, name: "Mary", phone: "+15555555555")
+      @line.reload
+      @third_queuer = Fabricate(:queuer, line: @line, name: "Marvin", phone: "333-333-3333")
+    end
+
+    context "line has users" do
+      it "should return 2 queuers" do
+        @first_queuer.next_queuers.should == [@second_queuer, @third_queuer]
+      end
+
+      it "should return 1 queuer" do
+        @second_queuer.next_queuers.should == [@third_queuer]
+      end
+    end
+
+    context "two lines in database, and queuer is the only one in his line" do
+      it "should be nil" do
+        line = Fabricate :line
+        queuer = Fabricate(:queuer, line: line, name: "Martin", phone: "999-999-9999")
+        queuer.next_queuers.should == []
+      end
+    end
+
+  end
+
   describe "#text(message)" do
     it "should text queuear with the given message" do
       line = Fabricate :line
