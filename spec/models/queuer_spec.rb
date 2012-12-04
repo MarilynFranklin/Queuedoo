@@ -12,6 +12,20 @@ describe Queuer do
     it { should belong_to :line }
     it { should belong_to :user }
   end
+
+  describe "#add_to_line(line)" do
+    it "should belong to line2" do
+      line = Fabricate :line
+      queuer = Fabricate(:queuer, line: line, name: "John", phone: "444-444-4444")
+      line2 = Fabricate :line
+      queuer.process!
+      queuer.add_to_line(line2)
+      queuer.processed.should == false
+      queuer.place_in_line.should == 1
+      queuer.line.should == line2
+    end
+  end
+
   context "formatting phone number" do
     before do
       @line = Fabricate :line

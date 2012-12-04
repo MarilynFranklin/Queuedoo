@@ -1,5 +1,5 @@
 class Queuer < ActiveRecord::Base
-  attr_accessible :line_id, :name, :phone, :processed, :user_id
+  attr_accessible :line_id, :name, :phone, :processed, :user_id, :place_in_line
   
   validates_presence_of :name
   validates :phone, presence:true,
@@ -9,6 +9,10 @@ class Queuer < ActiveRecord::Base
   belongs_to :user, foreign_key: 'user_id'
 
   before_save :set_place_in_line, :set_formatted_number
+
+  def add_to_line(line)
+    self.update_attributes(line_id: line.id, processed: false, place_in_line: line.next_spot)
+  end
 
   def attempt_skip
     if skip!

@@ -48,16 +48,11 @@ class QueuersController < ApplicationController
   end
 
   def update
-    if @queuer.update_attributes(params[:queuer])
-      if params[:queuer][:line_id]
-        @queuer.line = @line
-        @queuer.processed = "false"
-        @queuer.place_in_line = @line.next_spot
-        @queuer.save!
-        redirect_to @line, notice: "#{@queuer.name} has been added to the line"
-      else
-        redirect_to [@line, @queuer], notice: "Profile has been updated"
-      end
+    # checking for hidden field and adding previous queuer to the line
+    if params[:queuer][:line_id] && @queuer.add_to_line(@line)
+      redirect_to @line, notice: "#{@queuer.name} has been added to the line"
+    elsif @queuer.update_attributes(params[:queuer])
+      redirect_to [@line, @queuer], notice: "Profile has been updated"
     else
       flash[:error] = @queuer.errors.full_messages.join
       render :edit
