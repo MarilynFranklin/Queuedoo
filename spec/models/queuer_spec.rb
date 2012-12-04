@@ -7,7 +7,6 @@ describe Queuer do
     it { should validate_presence_of :name }
     it { should validate_presence_of :phone }
     it { should validate_format_of :phone }
-    # it { should validate_uniqueness_of :phone }
   end
   describe "associations" do
     it { should belong_to :line }

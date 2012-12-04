@@ -2,7 +2,7 @@ class Queuer < ActiveRecord::Base
   attr_accessible :line_id, :name, :phone, :processed, :user_id
   
   validates_presence_of :name
-  validates :phone, presence:true, uniqueness: true,
+  validates :phone, presence:true,
             format: {:with => /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/, message: "Please enter a valid phone number" }
 
   belongs_to :line
