@@ -33,29 +33,37 @@ describe Line do
 
   end
 
-  describe "#move_up_queuers_behind" do
+  describe "#move_up_queuers_behind(queuer)" do
     before do
-      line = Fabricate :line
-      @first_queuer = Fabricate(:queuer, line: line, name: "John", phone: "444-444-4444")
-      line.reload
-      @second_queuer = Fabricate(:queuer, line: line, name: "Mary", phone: "555-555-5555")
-      @third_queuer = Fabricate(:queuer, line: line, name: "Marvin", phone: "333-333-3333")
+      @line = Fabricate :line
+      @first_queuer = Fabricate(:queuer, line: @line, name: "John", phone: "444-444-4444")
+      @line.reload
+      @second_queuer = Fabricate(:queuer, line: @line, name: "Mary", phone: "555-555-5555")
+      @third_queuer = Fabricate(:queuer, line: @line, name: "Marvin", phone: "333-333-3333")
     end
-    context "first in line is processed" do
+    context "move up queuers after the first queuer" do
       it "should be 1" do
-        @first_queuer.process!
+        @line.move_up_queuers_behind(@first_queuer)
         @second_queuer.reload.place_in_line.should == 1
         @third_queuer.reload.place_in_line.should == 2
       end
     end
-    context "process queuer in the middle of the line" do
+    context "move up queuers in the middle of the line" do
       it "should be 1" do
-        @second_queuer.process!
-        @second_queuer.reload.place_in_line.should == 0
+        @line.move_up_queuers_behind(@second_queuer)
         @first_queuer.reload.place_in_line.should == 1
         @third_queuer.reload.place_in_line.should == 2
       end
     end
+
+    context "try to move up queuers after the last queuer" do
+      it "shouldn't make any changes" do
+        @line.move_up_queuers_behind(@second_queuer)
+        @first_queuer.reload.place_in_line.should == 1
+        @third_queuer.place_in_line.should == 3
+      end
+    end
+
   end
 
   describe "#next_spot" do
