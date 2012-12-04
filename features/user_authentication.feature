@@ -60,3 +60,18 @@ Feature: User authentication
     And I am on the homepage
     When I click "Sign Out"
     Then I should see "Signed out successfully."
+
+  Scenario: User tries to view a line that don't belong to them
+    Given I am signed in
+    And 1 line
+    When I go to that line's page
+    Then I should be on the home page
+
+  Scenario: User tries to view a queuer that don't belong to them
+    Given I am signed in
+    And 1 line
+    And that line has the following queuer:
+      | name  | John Smith   |
+      | phone | 555-555-5555 |
+    When I go to that queuer's page
+    Then I should be on the home page
