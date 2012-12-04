@@ -80,4 +80,18 @@ describe Line do
     end
   end
 
+  describe "#toggle_text_to_join" do
+    it "should be true" do
+      line = Fabricate :line
+      line.toggle_text_to_join
+      line.text_to_join.should == true
+    end
+    it "should be false" do
+      line = Fabricate :line
+      line.text_to_join = true
+      line.toggle_text_to_join
+      line.text_to_join.should == false
+    end
+  end
+
 end

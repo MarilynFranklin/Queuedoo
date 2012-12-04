@@ -41,13 +41,7 @@ class LinesController < ApplicationController
   end
 
   def toggle_texting
-    if @line.text_to_join
-      @line.text_to_join = false
-      @line.save!
-    else
-      @line.text_to_join = true
-      @line.save!
-    end
+    @line.toggle_text_to_join
     redirect_to @line
   end
 

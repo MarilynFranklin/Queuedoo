@@ -26,4 +26,14 @@ class Line < ActiveRecord::Base
   def number_of_queuers
     unprocessed_queuers.size
   end
+
+  def toggle_text_to_join
+    if text_to_join
+      self.text_to_join = false
+      save!
+    else
+      self.text_to_join = true
+      save!
+    end
+  end
 end
