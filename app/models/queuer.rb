@@ -3,7 +3,8 @@ class Queuer < ActiveRecord::Base
   
   validates_presence_of :name
   validates :phone, presence:true,
-            format: {:with => /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/, message: "Please enter a valid phone number" }
+            format: {:with => /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/,
+            message: "Please enter a valid phone number" }
 
   belongs_to :line
   belongs_to :user, foreign_key: 'user_id'
@@ -32,14 +33,6 @@ class Queuer < ActiveRecord::Base
     end
   end
 
-  def set_place_in_line
-    self.place_in_line ||= self.line.next_spot
-  end
-
-  def remove_dashes(phone_number)
-    phone_number.scan(/\d+/).join
-  end
-
   def format_number(phone_number)
     # +1 is added as the international code
     # Used when receiving calls through twilio
@@ -64,28 +57,12 @@ class Queuer < ActiveRecord::Base
     end
   end
 
-  def set_formatted_number
-    self.formatted_number = format_number(phone)
-  end
-
-  def process!
-    line.move_up_queuers_behind(self)
-    self.update_attributes( processed: true, place_in_line: 0 )
-    self.line = nil
-    save!
+  def last?
+    next_in_line ? false : true
   end
 
   def move_up!
     self.update_attributes( place_in_line: place_in_line - 1 )
-  end
-
-  def skip!
-    if next_in_line
-      next_in_line.move_up!
-      self.update_attributes( place_in_line: place_in_line + 1 )
-    else
-      nil
-    end
   end
 
   def next_in_line
@@ -96,8 +73,32 @@ class Queuer < ActiveRecord::Base
     line.unprocessed_queuers.where( "place_in_line > ?", place_in_line )
   end
 
-  def last?
-    next_in_line ? false : true
+  def process!
+    line.move_up_queuers_behind(self)
+    self.update_attributes( processed: true, place_in_line: 0 )
+    self.line = nil
+    save!
+  end
+
+  def remove_dashes(phone_number)
+    phone_number.scan(/\d+/).join
+  end
+
+  def set_formatted_number
+    self.formatted_number = format_number(phone)
+  end
+
+  def set_place_in_line
+    self.place_in_line ||= self.line.next_spot
+  end
+
+  def skip!
+    if next_in_line
+      next_in_line.move_up!
+      self.update_attributes( place_in_line: place_in_line + 1 )
+    else
+      nil
+    end
   end
 
   def text(message)
