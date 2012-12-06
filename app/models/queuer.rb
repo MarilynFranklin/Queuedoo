@@ -70,33 +70,30 @@ class Queuer < ActiveRecord::Base
 
   def process!
     line.move_up_queuers_behind(self)
-    self.processed = true
+    self.update_attributes( processed: true, place_in_line: 0 )
     self.line = nil
-    self.place_in_line = 0
     save!
   end
 
   def move_up!
-    self.place_in_line -= 1
-    save!
+    self.update_attributes( place_in_line: place_in_line - 1 )
   end
 
   def skip!
-    if self.next_in_line
-      self.next_in_line.move_up!
-      self.place_in_line += 1
-      save!
+    if next_in_line
+      next_in_line.move_up!
+      self.update_attributes( place_in_line: place_in_line + 1 )
     else
       nil
     end
   end
 
   def next_in_line
-    Queuer.where("place_in_line = ? AND line_id = ?", self.place_in_line + 1, self.line.id).first
+    line.unprocessed_queuers.find_by_place_in_line( place_in_line + 1 )
   end
 
   def next_queuers
-    Queuer.where("place_in_line > ? AND line_id = ?", place_in_line, line_id)
+    line.unprocessed_queuers.where( "place_in_line > ?", place_in_line )
   end
 
   def last?
