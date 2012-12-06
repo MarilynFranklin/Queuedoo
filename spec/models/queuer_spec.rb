@@ -133,6 +133,43 @@ describe Queuer do
     end
   end
 
+  describe "#attempt_to_join(line)" do
+
+    before do
+      line = Fabricate :line
+      user = Fabricate :user
+      @line2 = Fabricate( :line, user: user )
+      @queuer = Fabricate(:queuer, line: line)
+      @queuer.process!
+    end
+
+    it "should add queuer to line2" do
+      @line2.text_to_join = true
+      @line2.save!
+      @queuer.attempt_to_join(@line2)
+      @queuer.line.should == @line2
+      @queuer.place_in_line.should == 1
+      @queuer.processed.should == false
+    end
+
+    it "should say 'Place in line: 1'" do
+      @line2.text_to_join = true
+      @line2.save!
+      @queuer.attempt_to_join(@line2).should == "Place in line: #{1}"
+    end
+
+    it "should say 'The owner of that line does not allow Text To Join at this time" do
+      @queuer.attempt_to_join(@line2).should == "The owner of that line does not allow Text To Join at this time"
+    end
+
+    it "should not add queuer to line2" do
+      @queuer.attempt_to_join(@line2)
+      @queuer.line.should_not == @line2
+      @queuer.place_in_line.should == 0
+      @queuer.processed.should == true
+    end
+  end
+
   describe "#last?" do
 
     before do
