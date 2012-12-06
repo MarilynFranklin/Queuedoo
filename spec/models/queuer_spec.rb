@@ -34,6 +34,16 @@ describe Queuer do
       @line = Fabricate :line
     end
 
+    describe "#collect_digits(number)" do
+
+      it "should only contain digits" do
+        queuer =  Fabricate(:queuer, line: @line, name: "John", phone: "444-444-4444")
+        queuer.collect_digits("123-456-7891").should == "1234567891"
+        queuer.collect_digits("(123) 456-7891").should == "1234567891"
+        queuer.collect_digits("123 456 7891").should == "1234567891"
+      end
+    end
+
     describe "#format_number(number)" do
 
       it "should contain international code and contain digits only" do

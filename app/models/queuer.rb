@@ -33,11 +33,15 @@ class Queuer < ActiveRecord::Base
     end
   end
 
+  def collect_digits(phone_number)
+    phone_number.scan(/\d+/).join
+  end
+
   def format_number(phone_number)
     # +1 is added as the international code
     # Used when receiving calls through twilio
-    remove_dashes(phone_number).size == 10 ? international_code = "+1" : international_code = "+"
-    formatted_number = "#{international_code}#{remove_dashes(phone_number)}"
+    collect_digits(phone_number).size == 10 ? international_code = "+1" : international_code = "+"
+    formatted_number = "#{international_code}#{collect_digits(phone_number)}"
   end
 
   def generate_response(message)
@@ -78,10 +82,6 @@ class Queuer < ActiveRecord::Base
     self.update_attributes( processed: true, place_in_line: 0 )
     self.line = nil
     save!
-  end
-
-  def remove_dashes(phone_number)
-    phone_number.scan(/\d+/).join
   end
 
   def set_formatted_number
