@@ -25,11 +25,7 @@ class Queuer < ActiveRecord::Base
 
   def attempt_to_join(line)
     if line.text_to_join
-      self.line = line
-      self.user = line.user
-      self.processed = false
-      self.place_in_line = line.next_spot
-      save!
+      self.update_attributes( line_id: line.id, user_id: line.user.id, processed: false, place_in_line: line.next_spot )
       "Place in line: #{place_in_line}"
     else
       "The owner of that line does not allow Text To Join at this time"
