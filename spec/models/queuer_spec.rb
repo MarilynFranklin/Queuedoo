@@ -108,6 +108,31 @@ describe Queuer do
     end
   end
 
+  describe "#attempt_skip" do
+
+    before do
+      @line = Fabricate :line
+      @queuer = Fabricate(:queuer, line: @line, name: "John", phone: "+14444444444")
+      @line.reload
+    end
+
+    it "should text the next queuer in line with 'It's your turn!'" do
+      queuer2 = Fabricate(:queuer, line: @line, name: "Marie", phone: "+15555555555")
+      @queuer.attempt_skip
+      open_last_text_message_for queuer2.phone
+      current_text_message.should have_body "It's your turn!"
+    end
+
+    it "should say 'You have been moved to the next spot in line" do
+      queuer2 = Fabricate(:queuer, line: @line, name: "Marie", phone: "+15555555555")
+      @queuer.attempt_skip.should == "You have been moved to the next spot in line"
+    end
+
+    it "should reply with 'You can't be skipped because you are the last person in line" do
+      @queuer.attempt_skip.should == "You can't be skipped because you are the last person in line"
+    end
+  end
+
   describe "#last?" do
 
     before do
