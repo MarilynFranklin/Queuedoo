@@ -133,6 +133,24 @@ describe Queuer do
     end
   end
 
+  describe "#next_in_line" do
+
+    before do
+      @line = Fabricate :line
+      @queuer = Fabricate(:queuer, line: @line)
+    end
+
+    it "should be nil" do
+      @queuer.next_in_line.should == nil
+    end
+
+    it "should be queuer2" do
+      @line.reload
+      queuer2 = Fabricate(:queuer, line: @line)
+      @queuer.next_in_line.should == queuer2
+    end
+  end
+
   describe "#attempt_to_join(line)" do
 
     before do
@@ -220,18 +238,18 @@ describe Queuer do
 
     context "first person in line is skipped" do
 
-     it "should be 1" do
-       line = Fabricate :line
-       first_queuer = Fabricate(:queuer, line: line, name: "John", phone: "444-444-4444")
-       line.reload
-       second_queuer = Fabricate(:queuer, line: line, name: "Mary", phone: "555-555-5555")
-       line.reload
-       third_queuer = Fabricate(:queuer, line: line, name: "Marvin", phone: "333-333-3333")
-       line.reload
-       first_queuer.skip!
-       second_queuer.reload.place_in_line.should == 1
-       first_queuer.reload.place_in_line.should == 2
-     end
+      it "should be 1" do
+        line = Fabricate :line
+        first_queuer = Fabricate(:queuer, line: line, name: "John", phone: "444-444-4444")
+        line.reload
+        second_queuer = Fabricate(:queuer, line: line, name: "Mary", phone: "555-555-5555")
+        line.reload
+        third_queuer = Fabricate(:queuer, line: line, name: "Marvin", phone: "333-333-3333")
+        line.reload
+        first_queuer.skip!
+        second_queuer.reload.place_in_line.should == 1
+        first_queuer.reload.place_in_line.should == 2
+      end
     end
 
     context "person in the middle of the line is skipped" do
